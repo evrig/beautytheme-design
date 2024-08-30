@@ -1,0 +1,79 @@
+.page-product-bundle {
+    .price-final_price {
+        .price-from,
+        .price-to {
+            .price-container {
+                @apply text-gray-700 block mb-4;
+
+                .price-label {
+                    @apply block text-lg font-medium;
+                }
+
+                .price {
+                    @apply font-semibold text-2xl text-gray-800 leading-tight;
+                }
+            }
+
+            .price-including-tax + .price-excluding-tax {
+                @apply mt-1;
+
+                .price {
+                    @apply text-base;
+                }
+            }
+
+            .old-price {
+                .price-container {
+                    .price,
+                    .price-label {
+                        @apply text-gray-500 font-normal inline text-base;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.add-to-compare {
+    &:hover svg path {
+        @apply fill-white;
+    }
+}
+
+.add-to-wishlist {
+    &:hover svg path {
+        @apply stroke-white;
+    }
+}
+
+.option-select-dropdown {
+    background-position: right 1rem center;
+    select:invalid {
+        + label.order-1 {
+            @apply opacity-0 hidden;
+        }
+    }
+    select:valid {
+        @apply font-normal pt-0 h-auto pb-1.5;
+        + label.order-1 {
+            @apply opacity-100 ;
+        }
+    }
+}
+
+.catalog-product-view,
+.checkout-cart-index {
+    .page-main {
+        @apply mb-0 mt-0 md:mt-8;
+    }
+    .related-product-slider,
+    .crosssell-product-slider {
+        @apply bg-white;
+        .container {
+            @apply px-0 mb-0;
+        }
+        .slider-pagination {
+            padding-bottom: 0;
+        }
+    }
+}

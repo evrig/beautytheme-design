@@ -1,0 +1,95 @@
+<?php
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\ReCaptcha;
+use Magento\Framework\Escaper;
+use Magento\Newsletter\Block\Subscribe;
+
+/** @var Subscribe $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var ReCaptcha $recaptcha */
+/** @var HeroiconsOutline $heroicons */
+
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+// Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
+// on the Magento_ReCaptchaNewsletter module
+$recaptcha = $block->getData('viewModelRecaptcha');
+?>
+<div class="px-5 relative md:top-16 top-[76px]">
+    <div class="container px-5 rounded-[20px] bg-pearl md:py-0 py-5">
+        <form
+            class="form subscribe flex justify-between items-center flex-wrap md:h-[120px]"
+            action="<?= $escaper->escapeUrl($block->getFormActionUrl()) ?>"
+            method="post"
+            x-data="initNewsletterForm()"
+            @submit.prevent="submitForm()"
+            id="newsletter-validate-detail"
+            aria-label="<?= $escaper->escapeHtmlAttr(__('Subscribe to Newsletter')) ?>"
+        >
+            <h2
+                class="md:text-xl text-lg md:text-left text-center font-semibold tracking-widest text-gray-erieb title-font leading-normal md:w-1/2 w-full pr-2.5 md:mb-0 mb-2.5"
+                id="footer-newsletter-heading"
+            >
+                <?= $escaper->escapeHtml(__('Sign Up For Newsletter And Get 20% Off')) ?>
+            </h2>
+            <div class="flex justify-center gap-2 md:justify-start md:w-1/2 w-full relative">
+                <label for="newsletter-subscribe" class="sr-only">
+                    <?= $escaper->escapeHtml(__('Email Address')) ?>
+                </label>
+                <input
+                    name="email"
+                    type="email"
+                    required
+                    id="newsletter-subscribe"
+                    class="form-input inline-flex w-full border-pearl border border-solid rounded-3xl h-[60px]"
+                    placeholder="<?= $escaper->escapeHtmlAttr(__('Enter your email address')) ?>"
+                    aria-describedby="footer-newsletter-heading"
+                >
+                <?= $block->getBlockHtml('formkey') ?>
+                <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_NEWSLETTER) : '' ?>
+                <button class="inline-flex shrink-0 ml-auto absolute right-5 top-1/2 -mt-3.75">
+                    <svg width="30" height="30" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.51 16.037.348 25.288c-.087.145-.058.348.058.493s.29.174.464.116l27.579-10.99a.43.43 0 0 0 .232-.552.32.32 0 0 0-.232-.232L.87 3.103c-.174-.058-.348-.029-.464.116a.39.39 0 0 0-.058.464l5.162 9.28 13.05 1.392c.087 0 .174.087.174.145s-.087.145-.174.145z" fill="#B6713E"/></svg>
+                </button>
+            </div>
+            <template x-if="displayErrorMessage">
+                <p class="flex items-center text-red">
+                        <span class="inline-block w-8 h-8 mr-3">
+                            <?= $heroicons->exclamationCircleHtml(); ?>
+                        </span>
+                    <template x-for="errorMessage in errorMessages">
+                        <span x-html="errorMessage"></span>
+                    </template>
+                </p>
+            </template>
+        </form>
+        <div class="w-full">
+            <?= $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_NEWSLETTER) : '' ?>
+        </div>
+        <script>
+            function initNewsletterForm() {
+                return {
+                    errors: 0,
+                    hasCaptchaToken: 0,
+                    displayErrorMessage: false,
+                    errorMessages: [],
+                    setErrorMessages(messages) {
+                        this.errorMessages = [messages]
+                        this.displayErrorMessage = this.errorMessages.length
+                    },
+                    submitForm() {
+                        // Do not rename $form, the variable is expected to be declared in the recaptcha output
+                        const $form = document.querySelector('#newsletter-validate-detail');
+                        <?= $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_NEWSLETTER) : '' ?>
+
+                        if (this.errors === 0) {
+                            $form.submit();
+                        }
+                    }
+                }
+            }
+        </script>
+    </div>
+</div>

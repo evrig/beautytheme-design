@@ -1,0 +1,15 @@
+@layer components {
+    .btn {
+        @apply flex rounded-lg px-9 py-2 text-white text-base font-bold items-center transition;
+    }
+    .btn-primary {
+        @apply bg-copper text-white rounded-lg uppercase;
+
+        &:hover {
+            @apply bg-gray-erieb;
+        }
+    }
+    .btn-secondary {
+        @apply border border-copper text-copper rounded-lg uppercase hover:text-gray-erieb hover:border-gray-erieb;
+    }
+}

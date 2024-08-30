@@ -1,0 +1,63 @@
+<?php
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\Model\LocaleFormatter;
+use Magento\Catalog\Helper\Data;
+use Magento\Framework\Escaper;
+use Magento\LayeredNavigation\Block\Navigation\FilterRenderer;
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+
+/** @var FilterRenderer $block */
+/** @var Escaper $escaper */
+/** @var LocaleFormatter $localeFormatter */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsSolid $heroiconsSolid */
+$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
+
+$catalogHelper = $this->helper(Data::class);
+$showFilterInput = $block->getShowInput();
+
+/** @var array $filterItems */
+?>
+
+<ol class="items space-y-2.5" aria-label="<?= $escaper->escapeHtmlAttr(__('%1 filter options', $block->getFilterTitle())) ?>">
+    <?php foreach ($filterItems as $filterItem): ?>
+        <li class="item text-base">
+            <?php if ($filterItem->getCount() > 0): ?>
+                <a
+                    href="<?= $escaper->escapeUrl($filterItem->getUrl()) ?>"
+                    class="group/filter flex gap-2 justify-between items-center hover:text-black outline-offset-4 hover:text-copper"
+                >
+                    <span class="flex">
+                        <?php if ($showFilterInput): ?>
+                            <span
+                                class="relative inline-flex shrink-0 justify-center items-center"
+                                aria-hidden="true"
+                            ></span>
+                        <?php endif; ?>
+                        <span><?= /* @noEscape */ $filterItem->getLabel() ?></span>
+                    </span>
+                    <span
+                        class="count <?= $catalogHelper->shouldDisplayProductCountOnLayer() ? 'tabular-nums' : 'sr-only' ?>"
+                        aria-label="<?= ((int) $filterItem->getCount() === 1)
+                            ? $escaper->escapeHtmlAttr(__('1 product available in filter'))
+                            : $escaper->escapeHtmlAttr(__('%1 products available in filter', $filterItem->getCount())) ?>"
+                    ><?= /* @noEscape */ $localeFormatter->formatNumber((int)$filterItem->getCount()) ?></span>
+                </a>
+            <?php else: ?>
+                <span class="flex gap-2 justify-between py-1 hover:text-black">
+                    <span><?= /* @noEscape */ $filterItem->getLabel() ?></span>
+                    <span
+                        class="count <?= $catalogHelper->shouldDisplayProductCountOnLayer() ? 'tabular-nums' : 'sr-only' ?>"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('%1 products available in filter', $filterItem->getCount())) ?>"
+                    ><?= /* @noEscape */ $localeFormatter->formatNumber((int)$filterItem->getCount()) ?></span>
+                </span>
+            <?php endif; ?>
+        </li>
+    <?php endforeach ?>
+</ol>

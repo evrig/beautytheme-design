@@ -1,0 +1,45 @@
+@layer utilities {
+    .text-urbanist {
+        font-family: "Urbanist", "Helvetica Neue", Arial, sans-serif;
+    }
+    .text-sans-serif {
+        @apply text-urbanist;
+    }
+}
+
+html {
+    @apply antialiased;
+}
+
+body {
+    @apply text-gray-erieb leading-normal text-base tracking-normal text-urbanist ;
+}
+
+@font-face {
+    font-family: 'Urbanist';
+    src: url('../fonts/Urbanist/Urbanist-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Urbanist';
+    src: url('../fonts/Urbanist/Urbanist-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Urbanist';
+    src: url('../fonts/Urbanist/Urbanist-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Urbanist';
+    src: url('../fonts/Urbanist/Urbanist-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}

@@ -1,0 +1,30 @@
+/**
+ * different styles can be found at https://tailwindcss-forms.vercel.app/
+ **/
+.form-input,
+.form-email,
+.form-select,
+.form-multiselect,
+.form-textarea,
+.select {
+    @apply border border-pearl rounded-md min-h-10;
+
+    &:focus {
+        @apply border-copper outline-0 ring-0 ring-offset-0;
+    }
+}
+[type=checkbox],[type=radio] {
+    @apply border border-pearl;
+}
+[type=checkbox]:checked,
+[type=checkbox]:checked:focus,
+[type=checkbox]:checked:hover,
+[type=radio]:checked,
+[type=radio]:checked:focus,
+[type=radio]:checked:hover {
+    @apply bg-copper;
+}
+[type=checkbox]:focus,
+[type=radio]:focus {
+    @apply outline-0 ring-0 ring-offset-0
+}

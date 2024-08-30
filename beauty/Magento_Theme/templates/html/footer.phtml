@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\Escaper;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+?>
+<div class="bg-floralwhite">
+    <div class="container py-8 mx-auto">
+        <?= $block->getChildHtml('footer.block.links'); ?>
+    </div>
+    <div class="border-t border-copper">
+        <div class="container py-6 mx-auto flex items-center sm:flex-row flex-col">
+            <div class="flex md:justify-between justify-center w-full items-center flex-wrap">
+                <div class="md:w-1/2 w-full md:text-left text-center md:mb-0 mb-5">
+                    <?= $block->getChildHtml('copyright') ?>
+                </div>
+                <?= $block->getChildHtml('footer.payment.icons'); ?>
+            </div>
+        </div>
+    </div>
+</div>
+

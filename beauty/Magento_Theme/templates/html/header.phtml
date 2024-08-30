@@ -1,0 +1,193 @@
+<?php
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\StoreConfig;
+use Magento\Checkout\Block\Cart\Sidebar as SidebarCart;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Escaper $escaper */
+/** @var Template $block */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+/** @var StoreConfig $storeConfig */
+$storeConfig = $viewModels->require(StoreConfig::class);
+$showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDEBAR_DISPLAY);
+?>
+<script>
+    function initHeader () {
+        return {
+            searchOpen: false,
+            cart: {},
+            isCartOpen: false,
+            getData(data) {
+                if (data.cart) { this.cart = data.cart }
+            },
+            isCartEmpty() {
+                return !this.cart.summary_count
+            },
+            toggleCart(event) {
+                if (event.detail && event.detail.isOpen !== undefined) {
+                    this.isCartOpen = event.detail.isOpen
+                    if (!this.isCartOpen && this.$refs && this.$refs.cartButton) {
+                        this.$refs.cartButton.focus()
+                    }
+                } else {
+                    <?php
+                    /*
+                     * The toggle-cart event was previously dispatched without parameter to open the drawer (not toggle).
+                     * Keeping this in here for backwards compatibility.
+                     */
+                    ?>
+                    this.isCartOpen = true
+                }
+            }
+        }
+    }
+    function initCompareHeader() {
+        return {
+            compareProducts: null,
+            itemCount: 0,
+            receiveCompareData(data) {
+                if (data['compare-products']) {
+                    this.compareProducts = data['compare-products'];
+                    this.itemCount = this.compareProducts.count;
+                }
+            }
+        }
+    }
+</script>
+<div id="header"
+     class="relative z-30 w-full bg-floralwhite"
+     x-data="initHeader()"
+     @private-content-loaded.window="getData(event.detail.data)"
+>
+    <div class="container flex flex-wrap items-center w-full px-6 py-3 mx-auto mt-0 md:h-32.5 relative">
+        <div class="flex sm:w-auto w-1/2 items-center">
+            <!--Mobile Menu-->
+            <?= $block->getChildHtml('topmenu.mobile'); ?>
+            <!--Logo-->
+            <?= $block->getChildHtml('logo'); ?>
+        </div>
+        <div class="flex items-center gap-2 md:gap-1 md:order-3 order-2 md:-mr-1 w-45 justify-end ml-auto">
+            <!--Customer Icon & Dropdown-->
+            <?= $block->getChildHtml('customer') ?>
+
+            <!--Compare Icon-->
+            <a id="compare-link"
+               class="relative inline-block rounded md:pl-6 sm:pl-4 pl-1"
+               href="<?= $escaper->escapeUrl($block->getUrl('catalog/product_compare/index')) ?>"
+               title="<?= $escaper->escapeHtmlAttr(__('Compare Products')) ?>"
+               x-data="initCompareHeader()"
+               @private-content-loaded.window="receiveCompareData($event.detail.data)"
+               :aria-label="`
+                    <?= $escaper->escapeHtmlAttr(__('Compare Products')) ?>,
+                    ${itemCount > 1
+                        ? hyva.str('<?= $escaper->escapeJs(__('%1 Items')) ?>', itemCount)
+                        : hyva.str('<?= $escaper->escapeJs(__('%1 Item')) ?>', itemCount)
+                    }`"
+            >
+                <svg class="sm:w-6 w-4.5 sm:h-6 h-5" width="24" height="24" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 2.75H3.25a2.5 2.5 0 0 0-2.5 2.5v17.5a2.5 2.5 0 0 0 2.5 2.5H9.5v2.5H12V.25H9.5zm0 18.75H3.25L9.5 14zM20.75 2.75H14.5v2.5h6.25V21.5L14.5 14v11.25h6.25a2.5 2.5 0 0 0 2.5-2.5V5.25a2.5 2.5 0 0 0-2.5-2.5" fill="#222"/></svg>
+                <span
+                    x-text="itemCount"
+                    class="absolute -top-2.5 -right-2.5 min-w-4.5 h-4.5 p-1 rounded-full bg-copper text-white text-xs font-semibold leading-none text-center uppercase tabular-nums"
+                    :class="{ 'invisible': !(itemCount > 0) }"
+                    aria-hidden="true"
+                ></span>
+            </a>
+
+            <!--Wishlist Icon-->
+            <div class="wishlist-icon">
+                <?= $block->getChildHtml('customer.header.wishlist.link') ?>
+            </div>
+
+            <!-- Additional Header Elements -->
+            <?= $block->getChildHtml('additional') ?>
+
+            <!--Cart Icon-->
+            <?php if ($showMiniCart): ?>
+                <button
+            <?php else: ?>
+            <a
+                <?php endif ?>
+                id="menu-cart-icon"
+                class="relative inline-block rounded md:pl-6 sm:pl-4 pl-1"
+                x-ref="cartButton"
+                :aria-disabled="isCartEmpty()"
+                :aria-label="`
+                    <?= $escaper->escapeHtmlAttr($showMiniCart ? __('Toggle minicart') : __('View cart')) ?>,
+                    ${isCartEmpty()
+                        ? '<?= $escaper->escapeHtmlAttr(__('Cart is empty')) ?>'
+                        : cart.summary_count > 1
+                            ? hyva.str('<?= $escaper->escapeHtmlAttr(__('%1 items')) ?>', cart.summary_count)
+                            : hyva.str('<?= $escaper->escapeHtmlAttr(__('%1 item')) ?>', cart.summary_count)
+                    }`"
+                <?php if ($showMiniCart): ?>
+                    @click.prevent.stop="() => {
+                        $dispatch('toggle-cart', { isOpen: true })
+                    }"
+                    @toggle-cart.window="toggleCart($event)"
+                    :aria-expanded="isCartOpen"
+                    aria-haspopup="dialog"
+                <?php else: ?>
+                    href="<?= $escaper->escapeUrl($block->getUrl('checkout/cart/index')) ?>"
+                    title="<?= $escaper->escapeHtmlAttr(__('View cart')) ?>"
+                <?php endif ?>
+            >
+                <svg class="sm:w-6 w-5 sm:h-6 h-5" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6m4 15a1 1 0 1 1-2 0 1 1 0 0 1 2 0m11 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" stroke="#222" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span
+                    x-text="cart.summary_count"
+                    x-show="!isCartEmpty()"
+                    x-cloak
+                    class="absolute -top-2.5 -right-2.5 min-w-4.5 h-4.5 p-1 rounded-full bg-copper text-white
+                        text-xs font-semibold leading-none text-center uppercase tabular-nums"
+                    aria-hidden="true"
+                ></span>
+                <?php if ($showMiniCart): ?>
+                    </button>
+                <?php else: ?>
+            </a>
+        <?php endif ?>
+        </div>
+        <!--Cart Drawer-->
+        <?= $block->getChildHtml('cart-drawer'); ?>
+
+        <!--Search-->
+        <div class="relative order-2 lg:w-1/2 md:w-35% w-full lg:ml-12.5 md:ml-5 md:mt-0 mt-2.5">
+            <div class="relative z-10 w-full border-t bg-transparent border-container-lighter !block"
+                 id="search-content"
+                 x-cloak x-show="searchOpen"
+                 @click.outside="searchOpen = false"
+                 @keydown.escape="
+                    searchOpen = false;
+                    $refs.searchButton.focus();
+                 "
+            >
+                <?= $block->getChildHtml('header-search'); ?>
+            </div>
+            <!--Search Icon-->
+            <button
+                    id="menu-search-icon"
+                    class="absolute right-0 top-3.5 mr-4 p-0 z-10 rounded outline-offset-2"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Toggle search form')) ?>"
+                    aria-haspopup="true">
+                <?= $heroicons->searchHtml("h-6 w-6", 28, 28, ["aria-hidden" => "true"]) ?>
+            </button>
+        </div>
+    </div>
+    <div class="bg-pearl">
+        <div class="container">
+            <?= $block->getChildHtml('topmenu') ?>
+        </div>
+    </div>
+
+    <!--Authentication Pop-Up-->
+    <?= $block->getChildHtml('authentication-popup'); ?>
+</div>
+

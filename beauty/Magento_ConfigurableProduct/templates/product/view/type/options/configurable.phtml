@@ -1,0 +1,69 @@
+<?php
+
+use Magento\ConfigurableProduct\Block\Product\View\Type\Configurable;
+use Magento\Framework\Escaper;
+
+/** @var Configurable $block */
+/** @var Escaper $escaper */
+
+$product = $block->getProduct();
+$productId = $product->getId();
+$attributes = $block->decorateArray($block->getAllowAttributes());
+?>
+<?php if ($product->isSaleable() && count($attributes)): ?>
+
+    <script>
+        function initConfigurableDropdownOptions_<?= (int) $productId ?>() {
+            return initConfigurableOptions(
+                '<?= (int) $productId ?>',
+                <?= /* @noEscape */ $block->getJsonConfig() ?>
+            );
+        }
+    </script>
+
+    <div x-data="initConfigurableDropdownOptions_<?= (int) $productId ?>()"
+         x-init="init()"
+         @private-content-loaded.window="onGetCartData($event.detail.data)"
+         class="mb-6"
+    >
+        <h2 class="text-xl title-font font-medium mb-4">
+            <?= $escaper->escapeHtml(__('Options')) ?>
+        </h2>
+
+        <?php foreach ($attributes as $attribute): ?>
+        <div class="option-select-dropdown flex flex-col py-1 w-full border-t-0 border-x-0 border-b-2 border-copper bg-floralwhite bg-caret-down bg-no-repeat bg-5 mb-2.5 bg-caret-down">
+            <label class="h-0 text-f0 m-0"
+                   for="attribute<?= $escaper->escapeHtmlAttr($attribute->getAttributeId()) ?>"
+            >
+                <span>
+                    <?= $escaper->escapeHtml($attribute->getProductAttribute()->getStoreLabel()) ?>
+                </span>
+            </label>
+            <select name="super_attribute[<?= $escaper->escapeHtmlAttr($attribute->getAttributeId()) ?>]"
+                    id="attribute<?= $escaper->escapeHtmlAttr($attribute->getAttributeId()) ?>"
+                    class="form-select super-attribute-select w-full border-0 focus:shadow-none h-auto focus:border-copper pl-5 pr-11 pb-1.5 pt-2.25 focus:ring-0 focus:rounded-none font-semibold bg-none bg-transparent cursor-pointer order-2 shadow-none"
+                    x-on:change="changeOption(<?= (int) $attribute->getAttributeId() ?>, event.target.value)"
+                    required>
+                <option value="">
+                    <?= $escaper->escapeHtml(__('Select a')) ?>
+                    <?= $escaper->escapeHtml($attribute->getProductAttribute()->getStoreLabel()) ?>
+                </option>
+                <template
+                    x-for="(item, index) in getAllowedAttributeOptions(<?= (int) $attribute->getAttributeId() ?>)"
+                    :key="item.id"
+                >
+                    <option
+                        :value="item.id"
+                        x-html="getAttributeOptionLabel(item)"
+                        :selected="selectedValues[<?= $escaper->escapeHtmlAttr($attribute->getAttributeId()) ?>] ===
+                            item.id">
+                    </option>
+                </template>
+            </select>
+            <label class="order-1 text-sm font-semibold pl-2.5 pt-1">
+                <?= $escaper->escapeHtml($attribute->getProductAttribute()->getStoreLabel()) ?>
+            </label>
+        </div>
+        <?php endforeach; ?>
+    </div>
+<?php endif;?>

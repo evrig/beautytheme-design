@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+use Magento\Theme\Block\Html\Footer;
+use Magento\Framework\Escaper;
+
+/** @var Footer $block */
+/** @var Escaper $escaper */
+?>
+<small class="text-sm sm:mt-0 mt-4">
+    <span><?= $escaper->escapeHtml($block->getCopyright()) ?></span>
+</small>

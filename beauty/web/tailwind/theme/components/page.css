@@ -1,0 +1,20 @@
+.table-row-items > div.table-row-item {
+    @apply bg-container-darker;
+
+    &:nth-child(2n + 1) {
+        @apply bg-container-lighter;
+    }
+}
+
+.cms-index-index {
+    .page-main {
+        @apply m-0;
+    }
+    .columns {
+        @apply max-w-none p-0 gap-0;
+    }
+}
+
+.prose {
+    @apply text-gray-erieb;
+}
