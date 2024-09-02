@@ -56,7 +56,7 @@ $maxPriceFallbackValue = (int) $block->getMaxPriceFallbackValue() ?: 1000;
             :aria-valuetext="setPriceFilter(minprice, maxprice)"
         >
     </div>
-    <div class="flex justify-between items-center py-4 gap-6" aria-hidden="true">
+    <div class="flex justify-between items-center py-4 gap-6 font-medium" aria-hidden="true">
         <input
             type="number"
             :step="step"
@@ -64,10 +64,10 @@ $maxPriceFallbackValue = (int) $block->getMaxPriceFallbackValue() ?: 1000;
             :max="max"
             @input="mintrigger"
             x-model="minprice"
-            class="w-full flex-auto rounded-lg border-slate-300 bg-slate-50"
+            class="w-full flex-auto rounded-lg border-pearl bg-transparent"
             tabindex="-1"
         >
-        <span class="text-sm"><?= $escaper->escapeHtml(__('to')) ?></span>
+        <span class="text-base"><?= $escaper->escapeHtml(__('to')) ?></span>
         <input
             type="number"
             :step="step"
@@ -75,14 +75,13 @@ $maxPriceFallbackValue = (int) $block->getMaxPriceFallbackValue() ?: 1000;
             :max="max"
             @input="maxtrigger"
             x-model="maxprice"
-            class="w-full flex-auto rounded-lg border-slate-300 bg-slate-50"
+            class="w-full flex-auto rounded-lg border-pearl bg-transparent"
             tabindex="-1"
         >
     </div>
     <a
         :href="setFilterUrl"
-        class="btn justify-center rounded-md py-2.5 px-5 text-sm shadow-none hover:shadow-lg active:shadow transition
-            bg-blue-600 text-white border border-transparent hover:bg-blue-700 focus:ring-blue-200 active:bg-blue-700"
+        class="btn justify-center rounded-md py-2.5 px-5 text-base btn-primary"
         aria-label="<?= $escaper->escapeHtml(__('Apply %1 Filter', $filterTitle)) ?>"
     ><?= $escaper->escapeHtml(__('Apply Filter')) ?></a>
 

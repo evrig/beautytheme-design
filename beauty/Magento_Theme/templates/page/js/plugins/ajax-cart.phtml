@@ -152,7 +152,7 @@ $showAjaxCartModal = $block->getDisplayOnSuccess() === 'modal' || $block->getDis
 
 <?php if ($showAjaxCartModal): ?>
     <dialog
-        class="w-[640px] rounded-xl bg-white text-slate-800 p-0 shadow-xl backdrop:bg-black/75 backdrop:backdrop-blur-sm"
+        class="w-[640px] rounded-xl bg-white p-0 shadow-xl backdrop:bg-black/75 backdrop:backdrop-blur-sm"
         x-data="initAjaxCartModal"
         x-show="open"
         x-transition.duration.500ms
@@ -162,15 +162,14 @@ $showAjaxCartModal = $block->getDisplayOnSuccess() === 'modal' || $block->getDis
     >
         <template x-if="open && cartItem">
             <div>
-                <div class="flex gap-6 justify-between items-center p-6">
-                    <span class="text-xl font-bold">
+                <div class="flex gap-6 justify-between items-center p-6 border-b border-copper">
+                    <span class="md:text-xl text-lg font-bold">
                         <?= $escaper->escapeHtml(__('The product was added to your cart.')) ?>
                     </span>
                     <button
                         title="<?= $escaper->escapeHtml(__('Close fullscreen')) ?>"
                         aria-label="<?= $escaper->escapeHtml(__('Close fullscreen')) ?>"
                         @click="closeDialog()"
-                        class="text-slate-300 hover:text-slate-500 focus:text-slate-500"
                     >
                         <?= $heroicons->xHtml('', 32, 32, ['aria-hidden' => 'true']); ?>
                     </button>
@@ -194,7 +193,7 @@ $showAjaxCartModal = $block->getDisplayOnSuccess() === 'modal' || $block->getDis
                                 <dl class="table mt-2 text-sm">
                                     <template x-if="cartItem.product_sku && showSku">
                                         <div class="table-row">
-                                            <dt class="table-cell pb-1.5 pr-2 min-w-[theme(spacing.12)] sm:min-w-[theme(spacing.24)] font-normal text-slate-500 uppercase">
+                                            <dt class="table-cell pb-1.5 pr-2 min-w-[theme(spacing.12)] sm:min-w-[theme(spacing.24)] font-normal uppercase">
                                                 <?= $escaper->escapeHtml(__('Sku')) ?>
                                             </dt>
                                             <dd class="table-cell pb-1.5 font-bold" x-html="cartItem.product_sku"></dd>
@@ -202,36 +201,34 @@ $showAjaxCartModal = $block->getDisplayOnSuccess() === 'modal' || $block->getDis
                                     </template>
                                     <template x-for="option in cartItem.options">
                                         <div class="table-row">
-                                            <dt class="table-cell pb-1.5 pr-2 min-w-[theme(spacing.12)] sm:min-w-[theme(spacing.24)] font-normal text-slate-500" x-text="option.label"></dt>
+                                            <dt class="table-cell pb-1.5 pr-2 min-w-[theme(spacing.12)] sm:min-w-[theme(spacing.24)] font-normal" x-text="option.label"></dt>
                                             <dd class="table-cell pb-1.5 font-bold" x-html="option.value"></dd>
                                         </div>
                                     </template>
                                 </dl>
                             </template>
                         </div>
-                        <div class="leading-7 shrink-0 [&_.price]:font-normal" x-html="cartItem.product_price"></div>
+                        <div class="leading-7 shrink-0 [&_.price]:font-medium" x-html="cartItem.product_price"></div>
                     </div>
                 </div>
-                <div class="flex gap-2 justify-between items-end p-6 text-slate-600 font-bold">
+                <div class="flex gap-2 justify-between items-end p-6 font-bold">
                     <span>
                         <span><?= $escaper->escapeHtml(__('Cart Subtotal')) ?></span>
                         <span x-text="getItemCountText()"></span>
                     </span>
                     <span x-html="cart.subtotal"></span>
                 </div>
-                <div class="flex flex-col sm:flex-row lg:justify-end gap-4 p-6 bg-slate-100">
+                <div class="flex flex-col sm:flex-row lg:justify-end gap-4 p-6 bg-floralwhite">
                     <button
                         @click="closeDialog()"
-                        class="sm:w-1/2 lg:w-auto btn justify-center rounded-md py-3 px-6 text-base shadow-none hover:shadow-lg active:shadow disabled:shadow-none transition
-                            bg-white text-blue-700 border border-blue-400 hover:bg-white focus:ring-blue-200 disabled:bg-white disabled:border-slate-200 disabled:text-slate-600 disabled:opacity-70"
+                        class="btn btn-secondary justify-center"
                     ><?= $escaper->escapeHtml(__('Continue Shopping')) ?></button>
                     <a
                         href="<?= $escaper->escapeUrl($block->getUrl('checkout')) ?>"
                         @click.prevent.stop="closeDialog(); $dispatch('toggle-authentication', {
                             url: '<?= $escaper->escapeUrl($block->getUrl('checkout')) ?>'
                         });"
-                        class="sm:w-1/2 lg:w-auto btn justify-center rounded-md py-3 px-6 text-base shadow-none hover:shadow-lg active:shadow transition
-                            bg-blue-600 text-white border border-transparent hover:bg-blue-700 focus:ring-blue-200 active:bg-blue-700"
+                        class="btn btn-primary justify-center"
                     ><?= $escaper->escapeHtml(__('Checkout')) ?></a>
                 </div>
             </div>

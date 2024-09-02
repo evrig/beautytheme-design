@@ -1,10 +1,4 @@
 <?php
-/**
- * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes 2020-present. All rights reserved.
- * This product is licensed per Magento install
- * See https://hyva.io/license
- */
 
 declare(strict_types=1);
 
@@ -28,17 +22,17 @@ use Magento\Framework\Escaper;
         >
             <style>
                 .modes-mode.mode-grid {
-                    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>');
+                    background-image: url(data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2033%2032%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12.753%201H1.121v11.667h11.632zm18.279%200H19.4v11.667h11.632zm0%2018.333H19.4V31h11.632zm-18.279%200H1.121V31h11.632z%22%20stroke%3D%22%23B6713E%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E);
                 }
 
                 .modes-mode.mode-list {
-                    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>');
+                    background-image: url(data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2031%2030%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20x%3D%22.09%22%20width%3D%2229.961%22%20height%3D%223.333%22%20rx%3D%221.667%22%20fill%3D%22%23B6713E%22%2F%3E%3Crect%20x%3D%22.09%22%20y%3D%2212.857%22%20width%3D%2229.961%22%20height%3D%223.333%22%20rx%3D%221.667%22%20fill%3D%22%23B6713E%22%2F%3E%3Crect%20x%3D%22.09%22%20y%3D%2225.714%22%20width%3D%2229.961%22%20height%3D%223.333%22%20rx%3D%221.667%22%20fill%3D%22%23B6713E%22%2F%3E%3C%2Fsvg%3E);
                 }
             </style>
             <?php foreach ($block->getModes() as $code => $label): ?>
                 <button
                     type="button"
-                    class="modes-mode w-6 h-6 mode-<?= $escaper->escapeHtmlAttr(strtolower($code)) ?> <?= ($block->isModeActive($code)) ? 'active' : 'opacity-50 hover:opacity-100' ?>"
+                    class="modes-mode w-6 h-6 ml-3 mode-<?= $escaper->escapeHtmlAttr(strtolower($code)) ?> <?= ($block->isModeActive($code)) ? 'active' : 'opacity-50 hover:opacity-100' ?>"
                     title="<?= $escaper->escapeHtmlAttr($label) ?>"
                     <?php if ($block->isModeActive($code)): ?>
                         disabled

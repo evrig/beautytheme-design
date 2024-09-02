@@ -70,7 +70,7 @@ if ($isSharedItemRenderer && $block->getChildBlock('slider.item.template')) {
 $maxVisibleSlides = $block->getData('max_visible') ?? 4;
 
 // Breakpoints for 1 visible slider items on mobile, 2 visible on md, 3 on lg and 4 on xl (see $sliderPageSize).
-$defaultSliderItemClasses = 'mr-2 py-1 md:w-1/2 lg:w-1/3 xl:w-1/4';
+$defaultSliderItemClasses = 'xl:mr-3 lg:mr-4 mr-2 md:w-1/2 lg:w-32.5% xl:w-24.5%';
 
 $sliderSectionClasses = $block->getData('maybe_purged_tailwind_section_classes') ?? 'mb-12 mt-2 container';
 $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') ?? $defaultSliderItemClasses;
@@ -177,7 +177,7 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
                      @scroll.debounce="calcActive"
                 >
                     <?php foreach ($items as $product): ?>
-                        <div class="js_slide flex shrink-0 w-full <?= $escaper->escapeHtmlAttr($slideItemClasses) ?>"
+                        <div class="js_slide flex shrink-0 w-full border border-pearl p-4 bg-white rounded-lg <?= $escaper->escapeHtmlAttr($slideItemClasses) ?>"
                              role="group"
                              :aria-hidden="<?= (int) $sliderIndex ?> > active && <?= (int) $sliderIndex ?> <= (active + pageSize) ? 'false' : 'true'"
                              aria-label="<?= $escaper->escapeHtmlAttr(__('Item %1', $sliderIndex++)) ?>"

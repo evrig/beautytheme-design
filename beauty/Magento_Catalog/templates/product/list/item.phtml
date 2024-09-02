@@ -56,7 +56,7 @@ $showAddToWishlist = $wishlistViewModel->isEnabled();
 $showAddToCompare = $compareViewModel->showInProductList();
 $viewIsGrid = $viewMode === 'grid';
 $productType = $product->getTypeId();
-$isProductGroupedOrBundle = $productType === 'bundle' || $productType === "grouped";
+$isProductGroupedOrBundleOrConfigurable = $productType === 'bundle' || $productType === 'grouped' || $productType === 'configurable';
 $productId = $product->getId();
 $options   = $productOptionsViewmodel->getOptionsData($product);
 
@@ -104,7 +104,7 @@ $viewModels->require(BlockJsDependencies::class)->setBlockTemplateDependency($bl
             ->toHtml(); ?>
     </a>
     <div class="product-info flex flex-col grow">
-        <div class="mt-0.5 mb-4 items-center justify-center text-primary font-semibold text-xl <?= $viewIsGrid ? '' : 'md:text-left' ?>">
+        <div class="mt-0.5 mb-2.5 items-center justify-center text-primary font-semibold text-xl <?= $viewIsGrid ? '' : 'md:text-left' ?>">
             <a
                 class="product-item-link"
                 href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
@@ -122,7 +122,7 @@ $viewModels->require(BlockJsDependencies::class)->setBlockTemplateDependency($bl
         </div>
         <?php endif; ?>
 
-        <?php if ($isProductGroupedOrBundle): ?>
+        <?php if ($isProductGroupedOrBundleOrConfigurable): ?>
             <span class="sr-only">
                 <?= $escaper->escapeHtml(__('The price depends on the options chosen on the product page')) ?>
             </span>
@@ -141,16 +141,16 @@ $viewModels->require(BlockJsDependencies::class)->setBlockTemplateDependency($bl
             </div>
         <?php endif; ?>
         <div class="mt-auto pt-4 flex flex-wrap items-center gap-y-4 gap-x-2
-            <?= $viewIsGrid ? '' : 'md:justify-center' ?>">
+            <?= $viewIsGrid ? '' : '' ?>">
             <?php if ($product->isSaleable()): ?>
-                <?php if ($isProductGroupedOrBundle): ?>
+                <?php if ($isProductGroupedOrBundleOrConfigurable): ?>
                 <a
                     href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
                     class="w-auto btn btn-primary justify-center uppercase <?= $viewIsGrid ? 'mr-auto' : 'mr-auto md:mr-0' ?>"
                     title="<?= $escaper->escapeHtmlAttr(__('Configure %1 on the product page')) ?>"
                     aria-label="<?= $escaper->escapeHtmlAttr(__('Configure %1 on the product page', $productName)) ?>"
                 >
-                    <?= $escaper->escapeHtml(__('Configure')) ?>
+                    <?= $escaper->escapeHtml(__('View Details')) ?>
                 </a>
                 <?php else: ?>
                 <button

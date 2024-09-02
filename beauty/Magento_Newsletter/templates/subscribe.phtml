@@ -18,10 +18,10 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 // on the Magento_ReCaptchaNewsletter module
 $recaptcha = $block->getData('viewModelRecaptcha');
 ?>
-<div class="px-5 relative md:top-16 top-[76px]">
-    <div class="container px-5 rounded-[20px] bg-pearl md:py-0 py-5">
+<div class="px-5 relative md:top-16 top-20">
+    <div class="container px-5 rounded-[20px] bg-pearl md:py-8 py-5 ">
         <form
-            class="form subscribe flex justify-between items-center flex-wrap md:h-[120px]"
+            class="form subscribe flex justify-between items-center flex-wrap"
             action="<?= $escaper->escapeUrl($block->getFormActionUrl()) ?>"
             method="post"
             x-data="initNewsletterForm()"
@@ -30,7 +30,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
             aria-label="<?= $escaper->escapeHtmlAttr(__('Subscribe to Newsletter')) ?>"
         >
             <h2
-                class="md:text-xl text-lg md:text-left text-center font-semibold tracking-widest text-gray-erieb title-font leading-normal md:w-1/2 w-full pr-2.5 md:mb-0 mb-2.5"
+                class="md:text-xl text-lg md:text-left text-center font-semibold text-gray-erieb title-font leading-normal md:w-1/2 w-full pr-2.5 md:mb-0 mb-2.5"
                 id="footer-newsletter-heading"
             >
                 <?= $escaper->escapeHtml(__('Sign Up For Newsletter And Get 20% Off')) ?>

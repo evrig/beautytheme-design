@@ -1,1 +1,12 @@
-/* .category-view .sidebar .block.filter {} */
+.price-box {
+    @apply flex items-center;
+    .special-price {
+        @apply mr-2;
+    }
+    .old-price {
+        @apply line-through;
+        .price {
+            @apply text-gray-erieb ;
+        }
+    }
+}
