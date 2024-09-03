@@ -6,8 +6,11 @@
 .form-select,
 .form-multiselect,
 .form-textarea,
-.select {
-    @apply border border-pearl rounded-md min-h-10;
+.select,
+input.input-light,
+textarea.input-light,
+[type=search] {
+    @apply border border-pearl rounded-md min-h-10 w-full;
 
     &:focus {
         @apply border-copper outline-0 ring-0 ring-offset-0;

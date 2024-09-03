@@ -89,7 +89,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                     <li class="break-inside-avoid pb-4">
                                         <a
                                             href="<?= $escaper->escapeUrl($subMenu['url']) ?>"
-                                            class="level-1 block py-1 font-semibold hover:underline aria-[current=page]:underline"
+                                            class="level-1 block py-1 font-semibold hover:text-copper aria-[current=page]:underline aria-[current=page]:text-copper"
                                         ><?= $escaper->escapeHtml($subMenu['name']) ?></a>
                                         <?php if (!empty($subMenu['childData'])): ?>
                                             <ul>
@@ -97,7 +97,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                                     <li>
                                                         <a
                                                             href="<?= $escaper->escapeUrl($subMenuItems['url']) ?>"
-                                                            class="level-2 block py-1 hover:underline aria-[current=page]:underline"
+                                                            class="level-2 block py-1 hover:text-copper aria-[current=page]:underline aria-[current=page]:text-copper"
                                                         ><?= $escaper->escapeHtml($subMenuItems['name']) ?></a>
                                                     </li>
                                                 <?php endforeach; ?>
@@ -107,10 +107,10 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                 <?php endforeach; ?>
                             </ul>
                             <?php if ($showTopLevelAllLink): ?>
-                                <div class="mt-4 border-t border-slate-100">
+                                <div class="mt-4">
                                     <a
                                         href="<?= $escaper->escapeUrl($item['url']) ?>"
-                                        class="level-0 block pt-3 hover:underline aria-[current=page]:underline"
+                                        class="level-0 block pt-3 hover:text-copper aria-[current=page]:underline aria-[current=page]:text-copper"
                                     ><?= $escaper->escapeHtml(__('See all %1', $item['name'])) ?></a>
                                 </div>
                             <?php endif; ?>

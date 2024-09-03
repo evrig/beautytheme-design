@@ -1,11 +1,11 @@
 .account-nav li {
     & a,
     & strong {
-        @apply flex justify-between text-secondary py-1;
+        @apply flex justify-between text-gray-erieb hover:text-copper py-1;
     }
 
     & a:hover {
-        @apply text-black;
+        @apply text-copper;
     }
 
     & strong {

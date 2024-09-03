@@ -10,11 +10,11 @@
                     <argument name="block_id" xsi:type="string">home-three-blocks</argument>
                 </arguments>
             </block>
-            <block name="slider-1" template="Magento_Catalog::product/slider/product-slider.phtml" before="slider-2">
+            <block name="slider-1" template="Magento_Catalog::product/slider/product-slider.phtml"
+                   class="Evrig\Beauty\Block\Home\Slider" ifconfig="beauty_theme/homepage_silder/silider_1/enable"
+                   before="slider-2">
                 <arguments>
-                    <argument name="title" xsi:type="string" translate="true">Watches</argument>
-                    <argument name="category_ids" xsi:type="string">6</argument>
-                    <argument name="page_size" xsi:type="string">8</argument>
+                    <argument name="slider_type" xsi:type="string">slider-1</argument>
                 </arguments>
             </block>
             <block class="Magento\Cms\Block\Block" name="offter-section" before="slider-2">
@@ -22,15 +22,11 @@
                     <argument name="block_id" xsi:type="string">offter-section</argument>
                 </arguments>
             </block>
-            <block name="slider-2" template="Magento_Catalog::product/slider/product-slider.phtml" after="-">
+            <block name="slider-2" template="Magento_Catalog::product/slider/product-slider.phtml"
+                   class="Evrig\Beauty\Block\Home\Slider" ifconfig="beauty_theme/homepage_silder/silider_2/enable"
+                   after="-">
                 <arguments>
-                    <argument name="title" xsi:type="string" translate="true">Popular Products</argument>
-                    <argument name="price_from" xsi:type="string">30</argument>
-                    <argument name="price_to" xsi:type="string">100</argument>
-                    <argument name="page_size" xsi:type="string">8</argument>
-                    <argument name="sort_attribute" xsi:type="string">price</argument>
-                    <argument name="sort_direction" xsi:type="string">DESC</argument>
-                    <argument name="hide_details" xsi:type="boolean">true</argument>
+                    <argument name="slider_type" xsi:type="string">slider-2</argument>
                 </arguments>
             </block>
             <block class="Magento\Cms\Block\Block" name="our-brands" before="policy-shop">

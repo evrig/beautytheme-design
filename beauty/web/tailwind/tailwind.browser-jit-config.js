@@ -10,7 +10,7 @@ module.exports = {
             colors: {
                 'pearl': '#ECDEC1',
                 'floralwhite': '#FCF7EE',
-                'copper': '#B6713E',
+                'copper': '#A36638',
                 gray: {
                     'erieb': '#222222',
                     'dim': '#666666',
@@ -31,9 +31,9 @@ module.exports = {
                 '35%': '35%',
                 '30%': '30%',
             },
-            maxWidth: {
-                '1536': '1536px',
-            },
+            maxWidth: ({ theme }) => ({
+                ...theme('spacing'),
+            }),
             content: {
                 'blank': '""',
             },

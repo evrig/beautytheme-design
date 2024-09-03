@@ -6,7 +6,7 @@
     .old-price {
         @apply line-through;
         .price {
-            @apply text-gray-erieb ;
+            @apply text-gray-dim;
         }
     }
 }

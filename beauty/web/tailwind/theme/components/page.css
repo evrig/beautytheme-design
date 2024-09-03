@@ -17,4 +17,11 @@
 
 .prose {
     @apply text-gray-erieb;
+    :where(ul > li):not(:where([class~="not-prose"],[class~="not-prose"] *))::marker {
+        @apply text-gray-erieb;
+    }
+}
+
+.cms-page-view .page-main .main {
+    @apply prose max-w-none;
 }
