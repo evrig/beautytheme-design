@@ -13,6 +13,16 @@
     .columns {
         @apply max-w-none p-0 gap-0;
     }
+    #home-banner {
+        .item {
+            @apply hidden first:block;
+        }
+        &.glider {
+            .item {
+                @apply block;
+            }
+        }
+    }
 }
 
 .prose {

@@ -119,6 +119,11 @@ module.exports = hyvaModules.mergeTailwindConfig({
       }
     }
   },
+    variants: {
+        extend: {
+            margin: ['first','last']
+        }
+    },
   plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
   // Examples for excluding patterns from purge
   content: [

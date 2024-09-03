@@ -46,21 +46,6 @@
     }
 }
 
-.option-select-dropdown {
-    background-position: right 1rem center;
-    select:invalid {
-        + label.order-1 {
-            @apply opacity-0 hidden;
-        }
-    }
-    select:valid {
-        @apply font-normal pt-0 h-auto pb-1.5;
-        + label.order-1 {
-            @apply opacity-100 ;
-        }
-    }
-}
-
 .catalog-product-view,
 .checkout-cart-index {
     .page-main {
@@ -74,6 +59,21 @@
         }
         .slider-pagination {
             padding-bottom: 0;
+        }
+    }
+}
+.catalog-product-view {
+    .product-option-values {
+        .pdp-swatches {
+            @apply mr-0 last:mb-3;
+        }
+        .swatch-option {
+            @apply w-full rounded-none hover:border border;
+        }
+    }
+    #product_addtocart_form {
+        .pdp-swatches-tooltip {
+            @apply hidden;
         }
     }
 }
