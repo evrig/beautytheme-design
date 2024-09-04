@@ -35,3 +35,7 @@
 .cms-page-view .page-main .main {
     @apply prose max-w-none;
 }
+
+.container {
+    @apply 2xl:max-w-screen-2xl max-w-full;
+}

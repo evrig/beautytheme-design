@@ -31,6 +31,14 @@
             </block>
         </referenceBlock>
 
+        <referenceBlock name="topmenu_mobile">
+            <block class="Magento\Theme\Block\Html\Header\Logo" name="mobile-menu-logo">
+                <arguments>
+                    <argument name="logoPathResolver" xsi:type="object">Magento\Theme\ViewModel\Block\Html\Header\LogoPathResolver</argument>
+                    <argument name="logo_size_resolver" xsi:type="object">Magento\Theme\ViewModel\Block\Html\Header\LogoSizeResolver</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
 
         <move element="customer.header.wishlist.link" destination="header-content" after="-"/>
         <move element="topmenu_mobile" destination="header-content" after="-"/>

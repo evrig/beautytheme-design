@@ -30,6 +30,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
     class="z-20 order-2 sm:order-1 lg:order-2 navigation lg:hidden w-12 h-12"
     aria-label="<?= $escaper->escapeHtmlAttr(__('Site navigation')) ?>"
     role="navigation"
+    @click.away="open = false"
 >
     <!-- mobile -->
     <button
@@ -53,8 +54,22 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
         role="dialog"
         aria-modal="true"
     >
+
+        <div class="flex justify-between items-center border-b border-copper">
+            <div class="w-32 pl-8 py-4">
+                <?= $block->getChildHtml('mobile-menu-logo'); ?>
+            </div>
+            <button
+                @click="closeMenu()"
+                class="flex justify-end w-16 self-end mb-1"
+                aria-label="<?= $escaper->escapeHtmlAttr(__('Close menu')) ?>"
+                type="button"
+            >
+                <?= $heroicons->xHtml('hidden p-4', 64, 64, [":class" => "{ 'hidden' : !open, 'block': open }", "aria-hidden" => "true"]) ?>
+            </button>
+        </div>
         <ul
-            class="border-t border-pearl flex flex-col gap-y-1 mt-16"
+            class="border-t border-pearl flex flex-col gap-y-1"
             aria-label="<?= $escaper->escapeHtmlAttr(__('Site navigation links')) ?>"
         >
             <?php foreach ($menuItems as $index => $menuItem): ?>
@@ -65,17 +80,26 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                     <div
                         class="flex items-center transition-transform duration-150 ease-in-out transform"
                         :class="{
-                            '-translate-x-full' : mobilePanelActiveId,
-                            'translate-x-0' : !mobilePanelActiveId
+                            'open' : mobilePanelActiveId,
+                            'close' : !mobilePanelActiveId
                         }"
                     >
-                        <a
-                            class="flex items-center w-full px-8 py-4 border-b cursor-pointer border-pearl level-0"
-                            href="<?= $escaper->escapeUrl($menuItem['url']) ?>"
-                            title="<?= $escaper->escapeHtmlAttr($menuItem['name']) ?>"
-                        >
-                            <?= $escaper->escapeHtml($menuItem['name']) ?>
-                        </a>
+                        <?php if (!empty($menuItem['childData'])): ?>
+                            <span
+                                class="flex items-center w-full px-8 py-4 border-b cursor-pointer border-pearl font-semibold level-0"
+                                title="<?= $escaper->escapeHtmlAttr($menuItem['name']) ?>"
+                            >
+                                <?= $escaper->escapeHtml($menuItem['name']) ?>
+                            </span>
+                        <?php else: ?>
+                            <a
+                                class="flex items-center w-full px-8 py-4 border-b cursor-pointer border-pearl font-semibold level-0"
+                                href="<?= $escaper->escapeUrl($menuItem['url']) ?>"
+                                title="<?= $escaper->escapeHtmlAttr($menuItem['name']) ?>"
+                            >
+                                <?= $escaper->escapeHtml($menuItem['name']) ?>
+                            </a>
+                        <?php endif; ?>
                         <?php if (!empty($menuItem['childData'])): ?>
                             <button
                                 @click="openSubcategory('<?= /* @noEscape */ $index ?>')"
@@ -86,7 +110,13 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                 :aria-expanded="mobilePanelActiveId === '<?= /* @noEscape */ (string) $index ?>'"
                             >
                                 <div class="w-8 h-8 rounded">
-                                    <?= $heroicons->chevronRightHtml('w-full h-full p-1', 24, 24, ["aria-hidden" => "true"]) ?>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-full h-full p-1" width="24" height="24" aria-hidden="true"
+                                         :class="{
+                                'rotate-0': mobilePanelActiveId !== '<?= /* @noEscape */ (string) $index ?>',
+                                'rotate-180': mobilePanelActiveId === '<?= /* @noEscape */ (string) $index ?>'
+                            }">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
                                 </div>
                             </button>
                         <?php endif; ?>
@@ -94,13 +124,14 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                     <?php if (!empty($menuItem['childData'])): ?>
                         <div
                             data-child-id="<?= $escaper->escapeHtmLAttr($index) ?>"
-                            class="absolute top-0 right-0 z-10 flex flex-col gap-1 w-full h-full  bg-white shadow-4xl"
+                            class="z-10 flex flex-col gap-1 w-full h-full  bg-white"
                             :class="{
-                                'hidden': mobilePanelActiveId !== '<?= /* @noEscape */ (string) $index ?>'
+                                'hidden': mobilePanelActiveId !== '<?= /* @noEscape */ (string) $index ?>',
+                                'block': mobilePanelActiveId === '<?= /* @noEscape */ (string) $index ?>'
                             }"
                         >
                             <ul
-                                class="mt-16 transition-transform duration-200 ease-in-out translate-x-full transform"
+                                class="transition-transform duration-200 ease-in-out translate-x-full transform"
                                 :class="{
                                     'translate-x-full' : mobilePanelActiveId !== '<?= /* @noEscape */ (string) $index ?>',
                                     'translate-x-0' : mobilePanelActiveId === '<?= /* @noEscape */ (string) $index ?>',
@@ -108,25 +139,12 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                 aria-label="<?= $escaper->escapeHtmlAttr(__('Subcategories')) ?>"
                             >
                                 <li>
-                                    <button
-                                        type="button"
-                                        class="flex items-center px-8 py-4 border-b cursor-pointer border-pearl w-full border-t font-semibold"
-                                        @click="backToMainCategories('<?= /* @noEscape */ $index ?>-main')"
-                                        aria-label="<?= $escaper->escapeHtmlAttr(__('Back to main categories')) ?>"
-                                    >
-                                        <?= $heroicons->chevronLeftHtml('', 24, 24, ["aria-hidden" => "true"]); ?>
-                                        <span class="ml-4">
-                                            <?= $escaper->escapeHtml($menuItem['name']) ?>
-                                        </span>
-                                    </button>
-                                </li>
-                                <li>
                                     <a
                                         href="<?= $escaper->escapeUrl($menuItem['url']) ?>"
                                         title="<?= $escaper->escapeHtmlAttr($menuItem['name']) ?>"
                                         class="flex items-center w-full px-8 py-4 border-b cursor-pointer border-pearl"
                                     >
-                                        <span class="ml-10">
+                                        <span class="ml-5">
                                             <?= $escaper->escapeHtml(__('View All')) ?>
                                         </span>
                                     </a>
@@ -138,33 +156,18 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                             title="<?= $escaper->escapeHtmlAttr($subMenuItem['name']) ?>"
                                             class="flex items-center w-full px-8 py-4 border-b cursor-pointer border-pearl"
                                         >
-                                            <span class="ml-10 text-base text-gray-700">
+                                            <span class="ml-5">
                                                 <?= $escaper->escapeHtml($subMenuItem['name']) ?>
                                             </span>
                                         </a>
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
-                            <button
-                                @click="closeMenu()"
-                                class="absolute flex justify-end w-16 self-end mb-1 transition-none"
-                                aria-label="<?= $escaper->escapeHtmlAttr(__('Close menu')) ?>"
-                            >
-                                <?= $heroicons->xHtml('hidden p-4', 64, 64, [":class" => "{ 'hidden' : !open, 'block': open }", "aria-hidden" => "true"]) ?>
-                            </button>
                         </div>
                     <?php endif; ?>
                 </li>
             <?php endforeach; ?>
         </ul>
-        <button
-            @click="closeMenu()"
-            class="absolute flex justify-end w-16 self-end mb-1"
-            aria-label="<?= $escaper->escapeHtmlAttr(__('Close menu')) ?>"
-            type="button"
-        >
-            <?= $heroicons->xHtml('hidden p-4', 64, 64, [":class" => "{ 'hidden' : !open, 'block': open }", "aria-hidden" => "true"]) ?>
-        </button>
     </div>
 </nav>
 <script>
@@ -178,9 +181,9 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                 Array.from(menuNode.querySelectorAll('a')).filter(link => {
                     return link.href === window.location.href.split('?')[0];
                 }).map(item => {
-                    item.classList.add('underline');
+                    item.classList.add('text-copper');
                     item.closest('li.level-0') &&
-                    item.closest('li.level-0').querySelector('a.level-0').classList.add('underline');
+                    item.closest('li.level-0').querySelector('a.level-0').classList.add('text-copper');
                 });
             },
             openMenu() {

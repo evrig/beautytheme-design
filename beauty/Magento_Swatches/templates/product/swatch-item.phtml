@@ -28,13 +28,13 @@ if (!$productId || !$attributeId) {
     <template x-if="optionIsEnabled(<?= (int) $attributeId ?>, item.id) && optionIsActive(<?= (int) $attributeId ?>, item.id)">
         <label
             :for="$id('attribute-option-<?= (int) $productId ?>-'+item.id)"
-            class="swatch-option m-0 w-8 h-8 min-w-8 rounded-full hover:border-2 hover:border-copper items-center relative cursor-pointer select-none bg-container-lighter product-option-value-label border-pearl"
+            class="swatch-option m-0 w-8 h-8 min-w-8 rounded-lg !rounded-full hover:border-2 hover:border-copper items-center relative cursor-pointer select-none bg-container-lighter product-option-value-label border-pearl"
             :class="{
                 'border-2 border-copper/70':
                     (selectedValues[<?= (int)$attributeId ?>] === item.id),
                 'border-pearl':
                     (selectedValues[<?= (int)$attributeId ?>] !== item.id),
-                'min-w-8 rounded-full' : !isTextSwatch(<?= (int) $attributeId ?>, item.id),
+                'min-w-8 !rounded-full' : !isTextSwatch(<?= (int) $attributeId ?>, item.id),
                 'border-2 border-copper/80 ' : focusedLabel === item.id
             }"
             :style="getSwatchBackgroundStyle('<?= (int) $attributeId ?>',item.id)"

@@ -22,7 +22,7 @@ $availableLimitOptions = $block->getAvailableLimit();
 
                 <select
                     data-role="limiter"
-                    class="form-select limiter-options rounded-none"
+                    class="form-select limiter-options rounded-none w-auto"
                     @change="changeUrl(
                         'product_list_limit',
                         $event.currentTarget.options[$event.currentTarget.selectedIndex].value,
