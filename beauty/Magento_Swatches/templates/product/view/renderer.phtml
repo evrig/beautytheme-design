@@ -55,7 +55,7 @@ $tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
         <h2 class="mb-3 text-xl font-medium title-font border-t border-pearl pt-2">
             <?= $escaper->escapeHtml(__('Product Options:')) ?>
         </h2>
-        <div>
+        <div class="product-swatch-container">
             <?php foreach ($attributes as $attribute): ?>
                 <?php $attributeId = $attribute->getAttributeId(); ?>
                 <?php $productAttribute = $attribute->getProductAttribute();  ?>
@@ -68,7 +68,7 @@ $tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
                                     class="w-full label product-option-label bg-caret-down bg-no-repeat bg-right cursor-pointer mb-3"
                                     id="attribute-label-<?= $escaper->escapeHtmlAttr($productId . '-' . $attributeId) ?>"
                                     aria-hidden="true"
-                                    @click="open = !open"
+                                    onclick="showHideData(<?= (int)$attributeId ?>)"
                                 >
                                     <span><?= $escaper->escapeHtml($productAttribute->getStoreLabel()) ?></span>
                                     <span
@@ -76,11 +76,15 @@ $tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
                                         x-text="selectedSwatchText ? selectedSwatchText : getSwatchText(<?= (int)$attributeId ?>, selectedValues[<?= (int)$attributeId ?>])"
                                     ></span>
                                 </label>
-                                <div class="w-full product-option-values" x-show="open">
+                                <div class="w-full product-option-values hidden" id="attr_<?= (int)$attributeId ?>"
+                                     date-prodict-id="<?= (int)$attributeId ?>"
+                                     x-bind:data-val="getSwatchText(<?= (int)$attributeId ?>, selectedValues[<?= (int)$attributeId ?>]) ? 'hidden' : 'notSelected'"
+                                     :class="getSwatchText(<?= (int)$attributeId ?>, selectedValues[<?= (int)$attributeId ?>]) ? 'hidden' : ''"
+                                >
                                     <div
-                                         @click="open = false;selectedSwatchText= null"
-                                         role="radiogroup"
-                                         aria-label="<?= $escaper->escapeHtmlAttr($productAttribute->getStoreLabel()) ?>"
+                                        @click="open = false;selectedSwatchText= null"
+                                        role="radiogroup"
+                                        aria-label="<?= $escaper->escapeHtmlAttr($productAttribute->getStoreLabel()) ?>"
                                     >
                                         <template
                                             x-for="(item, index) in optionConfig.attributes[<?= (int) $attributeId ?>].options"
@@ -92,6 +96,11 @@ $tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
                                 </div>
                             </div>
                         </template>
+                        <span class="hidden text-sm text-red" id="error_<?= (int)$attributeId ?>"
+                              :class="getSwatchText(<?= (int)$attributeId ?>, selectedValues[<?= (int)$attributeId ?>]) ? 'hidden' : ''"
+                        >
+                           <?= $escaper->escapeHtml(__(' Please select one of these options')) ?>
+                        </span>
                     </div>
                 <?php else: ?>
                     <div class="flex flex-col sm:flex-row items-center py-2 w-full border-t border-gray-300 last:border-b">
@@ -132,4 +141,39 @@ $tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
     </div>
 
 <?php endif;?>
-
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        var addToCartButton = document.getElementById('product-addtocart-button');
+        addToCartButton.addEventListener('click', function(event) {
+            let count = 0;
+            // document.querySelectorAll('.product-option-values').forEach(element => {
+            document.querySelectorAll('.product-option-values.hidden').forEach(element => {
+                var dataVal = element.getAttribute('data-val');
+                var productId = element.getAttribute('date-prodict-id');
+                var productError = document.querySelector("#error_" + productId);
+                if (count == 0) {
+                    if (dataVal != 'hidden') {
+                        productError.classList.remove('hidden');
+                        count++;
+                    } else {
+                        productError.classList.add("hidden");
+                    }
+                }
+            });
+        });
+    });
+    function showHideData(attributeId) {
+        event.preventDefault();
+        var element = document.querySelector("#attr_" + attributeId);
+        var button = event.currentTarget;
+        if (element.classList.contains("hidden")) {
+            element.classList.remove("hidden");
+            button.classList.add("active");
+            var productError = document.querySelector("#error_" + attributeId);
+            productError.classList.add("hidden");
+        } else {
+            element.classList.add("hidden");
+            button.classList.remove("active");
+        }
+    }
+</script>

@@ -182,8 +182,11 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                     return link.href === window.location.href.split('?')[0];
                 }).map(item => {
                     item.classList.add('text-copper');
-                    item.closest('li.level-0') &&
-                    item.closest('li.level-0').querySelector('a.level-0').classList.add('text-copper');
+                    if(item.closest('li.level-0') &&
+                        item.closest('li.level-0').querySelector('a.level-0')  != null){
+                        item.closest('li.level-0') &&
+                        item.closest('li.level-0').querySelector('a.level-0').classList.add('text-copper');
+                    }
                 });
             },
             openMenu() {

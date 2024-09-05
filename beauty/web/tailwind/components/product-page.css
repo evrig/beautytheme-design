@@ -68,12 +68,18 @@
             @apply mr-0 last:mb-3;
         }
         .swatch-option {
-            @apply w-full rounded-none hover:border border;
+            @apply w-full !rounded-none hover:border border-y;
         }
     }
     #product_addtocart_form {
         .pdp-swatches-tooltip {
             @apply hidden;
+        }
+    }
+    .product-swatch-container {
+        @apply flex gap-x-4 justify-between;
+        .swatch-attribute {
+            @apply w-1/2;
         }
     }
 }

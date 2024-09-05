@@ -18,11 +18,7 @@ $maxPriceFallbackValue = (int) $block->getMaxPriceFallbackValue() ?: 1000;
 /** @var array $filterItems */
 ?>
 
-<div
-    aria-role="group"
-    aria-label="<?= $escaper->escapeHtmlAttr(__('%1 filter options', $filterTitle)) ?>"
-    x-data="filterPriceRange_<?= $escaper->escapeHtmlAttr($filterId) ?>()"
->
+<div x-data="filterPriceRange_<?= $escaper->escapeHtmlAttr($filterId) ?>()" >
     <div
         class="multirange-slider"
         :style="`--tw-range-fill-min: ${(minprice / max) * 100}; --tw-range-fill-max: ${(maxprice / max) * 100}`"

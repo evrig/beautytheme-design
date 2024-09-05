@@ -74,7 +74,7 @@ $maxPriceFallbackValue = (int) $block->getMaxPriceFallbackValue() ?: 1000
                             class="block-title [&::-webkit-details-marker]:hidden p-2.5 bg-pearl flex items-center justify-between font-medium md:text-lg cursor-pointer outline-offset-2"
                             aria-label="<?= $escaper->escapeHtml(__('%1 filter', $filter->getName())) ?>"
                         >
-                            <h3 class="text-xl font-semibold"><?= $escaper->escapeHtml(__($filter->getName())) ?></h3>
+                            <span class="text-xl font-semibold"><?= $escaper->escapeHtml(__($filter->getName())) ?></span>
                             <span class="text-blue-700 transition-transform transform duration-300 ease-in-out group-open:rotate-180">
                                 <?= $heroiconsSolid->chevronDownHtml('text-gray-erieb', 24, 24, ["aria-hidden" => "true"]); ?>
                             </span>
